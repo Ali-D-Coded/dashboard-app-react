@@ -1,0 +1,30 @@
+@import url("antd/dist/reset.css");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #7775;
+}
+::-webkit-scrollbar-track {
+  background-color: #5555;
+}
+
+/* Firefox */
+::-moz-scrollbar {
+  width: 6px;
+}
+::-moz-scrollbar-thumb {
+  width: 6px;
+}
+::-moz-scrollbar-track {
+  width: 6px;
+}
