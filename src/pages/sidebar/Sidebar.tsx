@@ -12,9 +12,10 @@ import {
 import { TbBrandGoogleAnalytics, TbUsers } from "react-icons/tb";
 import { AiOutlineShop, AiOutlineTags } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
+import { IoNotificationsOutline, IoSearchOutline } from "react-icons/io5";
 import { HiOutlineUserGroup, HiOutlineShoppingCart } from "react-icons/hi";
 import { CgNotes } from "react-icons/cg";
-import { Tooltip } from "antd";
+import { Avatar, Input, Tooltip } from "antd";
 import Dropdown from "../../components/DropDown";
 
 function Sidebar() {
@@ -57,7 +58,7 @@ function Sidebar() {
         {
           id: "seller",
           active: false,
-          path: "/dashboard/users/seller",
+          path: "/dashboard/users/sellers",
           name: "SHOP",
           icon: <AiOutlineShop className="text-[1.5rem]" />,
         },
@@ -230,7 +231,26 @@ function Sidebar() {
           </ul>
         </nav>
       </motion.aside>
-      <main>
+      <main className="w-full bg-slate-100">
+        <header className=" max-h-[5rem] bg-white p-3">
+          <nav className="flex justify-between">
+            <div>
+              {/* <Input className="w-[200px]" type="search" /> */}
+              <Avatar className="text-center flex justify-center items-center text-xl bg-slate-100 text-black border shadow-xl cursor-pointer">
+                <IoSearchOutline />
+              </Avatar>
+            </div>
+            <div className="flex gap-3">
+              <Avatar className=" cursor-pointer text-center flex justify-center items-center text-xl shadow-xl">
+                <IoNotificationsOutline />
+              </Avatar>
+              <Avatar
+                className=" cursor-pointer shadow-xl"
+                src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2"
+              />
+            </div>
+          </nav>
+        </header>
         <Outlet />
       </main>
     </div>

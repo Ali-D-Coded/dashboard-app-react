@@ -13,11 +13,17 @@ import Reviews from "./pages/reviews/Reviews";
 import Customers from "./pages/users/customers/Customers";
 import Seller from "./pages/users/seller/Seller";
 import Products from "./pages/product/Products";
+import { RequireAuth } from "react-auth-kit";
+import Login from "./pages/auth/Login";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Sidebar />,
+    element: (
+      <RequireAuth loginPath="/auth/login">
+        <Sidebar />
+      </RequireAuth>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -46,6 +52,10 @@ const router = createBrowserRouter([
       },
     ],
     // element: <div>Hello word</div>,
+  },
+  {
+    path: "/auth/login",
+    element: <Login />,
   },
 ]);
 function App() {
