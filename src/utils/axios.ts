@@ -4,7 +4,7 @@ import jsCookie from 'js-cookie';
 
 
 // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbGV5NWtkZDkwMDAwenJmeXpnYmxuOG9wIiwiZW1haWwiOiJhZG1pbkBmdXJzYW5jYXJ0LmNvbSIsImlhdCI6MTY3ODI3Mjk3NiwiZXhwIjoxNjc4ODc3Nzc2fQ.hffQm7Jk3fDV5f9uPf9_wHPIXPTYYO_q7sRCMNfaQPo"
-const API_URL = "http://192.168.1.47:3010/api"
+const API_URL = "http://192.168.1.7:3010/api"
 
 const APIClientPrivate = axios.create({
   baseURL: API_URL,

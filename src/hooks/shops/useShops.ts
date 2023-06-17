@@ -21,3 +21,17 @@ export const useEditShop = () => {
 	};
   return useMutationWithToken(editShop);
 };
+
+export const useCreateShop = () => {
+	const editShop = async (data: any,headers:any) => {
+		
+		console.log({ data });
+		
+		return await APIClientPrivate.post("/auth/local/shop/sign-up", data, {
+			headers: {
+			"Content-Type":"application/json"
+		}
+		});
+	};
+  return useMutationWithToken(editShop);
+};
