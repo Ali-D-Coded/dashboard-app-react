@@ -1,13 +1,11 @@
-import { Button, Checkbox, Form, Input, Switch } from "antd";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import React from "react";
+import { Button, Form, Input, Switch } from "antd";
+
 import { useCreateShop } from "../../../hooks/shops/useShops";
-import { useNavigate } from "react-router-dom";
 
 function CreateSeller({ closeDrawer }: any) {
   const { mutate: createData } = useCreateShop();
   const [form] = Form.useForm();
-  const navigate = useNavigate();
+
   const onFinish = (values: any) => {
     const data = {
       username: values.username,

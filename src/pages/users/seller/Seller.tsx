@@ -4,6 +4,7 @@ import Table, { ColumnsType } from "antd/es/table";
 import { Avatar, Button, Drawer, Tag } from "antd";
 import CreateSeller from "./CreateSeller";
 import EditSeller from "./EditSeller";
+import { useGlobalState } from "../../../context/GlobalStateContext";
 
 interface DataType {
   key: React.Key;
@@ -19,11 +20,16 @@ interface DataType {
 }
 
 function Seller() {
-  const { data: shops, isLoading, isSuccess, isError } = useGetAllShops();
+  const { data: shops, isLoading, isSuccess } = useGetAllShops();
   const [openCreate, setOpenCreate] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const { collectToEdit } = useGlobalState();
 
-  const showEditDrawer = (v: any) => {
+  const showEditDrawer = (i: any) => {
+    // console.log({ i });
+
+    collectToEdit(i);
+
     setOpenEdit(true);
   };
 
@@ -117,7 +123,7 @@ function Seller() {
       key: "operation",
       fixed: "right",
       width: 100,
-      render: (i) => (
+      render: (i: any) => (
         <Button onClick={() => showEditDrawer(i)} className="bg-orange-400">
           Edit
         </Button>
@@ -175,7 +181,10 @@ function Seller() {
         onClose={() => setOpenEdit(false)}
         open={openEdit}
       >
-        <EditSeller />
+        <EditSeller
+          openEdit={openEdit}
+          closeDrawer={() => setOpenEdit(!openEdit)}
+        />
       </Drawer>
     </div>
   );

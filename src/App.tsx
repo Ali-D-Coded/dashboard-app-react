@@ -1,12 +1,8 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // import Home from "./pages/Home";
 // import About from "./pages/About";
 import Sidebar from "./pages/sidebar/Sidebar";
 import Home from "./pages/home/Home";
-import About from "./pages/About";
 import ErrorPage from "./pages/error/ErrorPage";
 import Analytics from "./pages/analytics/Analytics";
 import Reviews from "./pages/reviews/Reviews";
@@ -15,6 +11,7 @@ import Seller from "./pages/users/seller/Seller";
 import Products from "./pages/product/Products";
 import { RequireAuth } from "react-auth-kit";
 import Login from "./pages/auth/Login";
+import { GlobalStateProvider } from "./context/GlobalStateContext";
 
 const router = createBrowserRouter([
   {
@@ -60,13 +57,13 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <>
+    <GlobalStateProvider>
       {/* <Routes> */}
       {/* <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} /> */}
       <RouterProvider router={router} />
       {/* </Routes> */}
-    </>
+    </GlobalStateProvider>
   );
 }
 

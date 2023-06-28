@@ -1,7 +1,6 @@
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import axios from "axios";
-import APIClientPrivate, { APIClient } from "../../utils/axios";
+import  { APIClient } from "../../utils/axios";
 import { useSignIn } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +33,7 @@ function Login() {
     }
   };
   return (
-    <div className="flex justify-center items-center bg-blue-800 h-screen">
+    <div className="flex items-center justify-center h-screen bg-blue-800">
       <div className="w-[300px] bg-white">
         <Form
           name="normal_login"

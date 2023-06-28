@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
@@ -15,14 +15,14 @@ import { BiCategory } from "react-icons/bi";
 import { IoNotificationsOutline, IoSearchOutline } from "react-icons/io5";
 import { HiOutlineUserGroup, HiOutlineShoppingCart } from "react-icons/hi";
 import { CgNotes } from "react-icons/cg";
-import { Avatar, Input, Tooltip } from "antd";
+import { Avatar, Tooltip } from "antd";
 import Dropdown from "../../components/DropDown";
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const toggleSideBar = () => setIsOpen(!isOpen);
 
-  const [activeRoute, setActiveRoute] = useState();
+  const [activeRoute] = useState();
 
   const routes: any = [
     {
@@ -236,16 +236,16 @@ function Sidebar() {
           <nav className="flex justify-between">
             <div>
               {/* <Input className="w-[200px]" type="search" /> */}
-              <Avatar className="text-center flex justify-center items-center text-xl bg-slate-100 text-black border shadow-xl cursor-pointer">
+              <Avatar className="flex items-center justify-center text-xl text-center text-black border shadow-xl cursor-pointer bg-slate-100">
                 <IoSearchOutline />
               </Avatar>
             </div>
             <div className="flex gap-3">
-              <Avatar className=" cursor-pointer text-center flex justify-center items-center text-xl shadow-xl">
+              <Avatar className="flex items-center justify-center text-xl text-center shadow-xl cursor-pointer ">
                 <IoNotificationsOutline />
               </Avatar>
               <Avatar
-                className=" cursor-pointer shadow-xl"
+                className="shadow-xl cursor-pointer "
                 src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2"
               />
             </div>
