@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useGetAllShops } from "../../../hooks/shops/useShops";
-import Table, { ColumnsType } from "antd/es/table";
-import { Avatar, Button, Drawer, Tag } from "antd";
+import { Table, Avatar, Button, Drawer, Tag, FixedType } from "antd";
 import CreateSeller from "./CreateSeller";
 import EditSeller from "./EditSeller";
 import { useGlobalState } from "../../../context/GlobalStateContext";
 
-interface DataType {
+interface ShopData {
   key: React.Key;
   name: string | null;
   phone: string | null;
-  address: string | null;
+  address: string[] | null;
   email: string | null;
   referalCode: string | null;
-  images: [] | null;
+  images: { url: string }[] | null;
   blocked?: boolean;
   adminApproved?: boolean;
   action: any;
@@ -25,168 +24,174 @@ function Seller() {
   const [openEdit, setOpenEdit] = useState(false);
   const { collectToEdit } = useGlobalState();
 
-  const showEditDrawer = (i: any) => {
-    // console.log({ i });
+  const showEditDrawer = useCallback(
+    (item: ShopData) => {
+      collectToEdit(item);
+      setOpenEdit(true);
+    },
+    [collectToEdit]
+  );
 
-    collectToEdit(i);
+  const columns = useMemo(
+    () => [
+      {
+        title: "Full Name",
+        dataIndex: "name",
+        key: "name",
+        width: 100,
+      },
+      {
+        title: "Images",
+        dataIndex: "images",
+        key: "images",
+        width: 150,
+        render: (images: { url: string }[] | null) => (
+          <Avatar.Group>
+            {images?.map((image, index) => (
+              <Avatar key={index} src={image.url} />
+            ))}
+          </Avatar.Group>
+        ),
+      },
+      {
+        title: "Phone",
+        dataIndex: "phone",
+        key: "phone",
+        width: 110,
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+        width: 150,
+      },
+      {
+        title: "Address",
+        dataIndex: "address",
+        key: "address",
+        width: 150,
+        render: (addresses: string[] | null) => (
+          <div>
+            {addresses?.map((address, index) => (
+              <div key={index}>{address}</div>
+            ))}
+          </div>
+        ),
+      },
+      {
+        title: "Referal Code",
+        dataIndex: "referalCode",
+        key: "referalCode",
+        width: 150,
+      },
+      {
+        title: "Status",
+        dataIndex: "blocked",
+        key: "blocked",
+        fixed: "right" as FixedType ,
+        width: 100,
+        render: (blocked: boolean | undefined) => (
+          <div>
+            {!blocked ? (
+              <Tag color="green">Active</Tag>
+            ) : (
+              <Tag color="red">Blocked</Tag>
+            )}
+          </div>
+        ),
+      },
+      {
+        title: "Admin Approved",
+        dataIndex: "adminApproved",
+        key: "adminApproved",
+        fixed: "right",
+        width: 150,
+        render: (adminApproved: boolean | undefined) => (
+          <div>
+            {adminApproved ? (
+              <Tag color="green">Approved</Tag>
+            ) : (
+              <Tag color="yellow">Pending</Tag>
+            )}
+          </div>
+        ),
+      },
+      {
+        title: "Action",
+        key: "operation",
+        fixed: "right",
+        width: 100,
+        render: (item: ShopData) => (
+          <Button
+            onClick={() => showEditDrawer(item)}
+            className="bg-orange-400"
+          >
+            Edit
+          </Button>
+        ),
+      },
+    ],
+    [showEditDrawer]
+  );
 
-    setOpenEdit(true);
-  };
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "Full Name",
-      width: 100,
-      dataIndex: "name",
-      key: "name",
-      // fixed: "left",
-    },
-    {
-      title: "Images",
-      dataIndex: "images",
-      key: "images",
-      width: 150,
-      render: (i: any) => (
-        <Avatar.Group>
-          {i?.map((it: any, index: number) => (
-            <Avatar key={index} src={it.url} />
-          ))}
-        </Avatar.Group>
-      ),
-    },
-    {
-      title: "Phone",
-      width: 110,
-      dataIndex: "phone",
-      key: "phone",
-      // fixed: "left",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width: 150,
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      width: 150,
-      render: (i) => (
-        <div>
-          {i?.map((it: any) => (
-            <div key={it.id}>{it.address}</div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: "Referal Code",
-      dataIndex: "referalCode",
-      key: "referalCode",
-      width: 150,
-    },
-    {
-      title: "Status",
-      dataIndex: "blocked",
-      key: "blocked",
-      fixed: "right",
-      width: 100,
-      render: (i) => (
-        <div>
-          {!i ? (
-            <Tag color="green">Active</Tag>
-          ) : (
-            <Tag color="red">Blocked</Tag>
-          )}
-        </div>
-      ),
-    },
-    {
-      title: "Admin Approved",
-      dataIndex: "adminApproved",
-      key: "adminApproved",
-      fixed: "right",
-      width: 150,
-      render: (i) => (
-        <div>
-          {i ? (
-            <Tag color="green">Approved</Tag>
-          ) : (
-            <Tag color="yellow">Pending</Tag>
-          )}
-        </div>
-      ),
-    },
-    {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
-      width: 100,
-      render: (i: any) => (
-        <Button onClick={() => showEditDrawer(i)} className="bg-orange-400">
-          Edit
-        </Button>
-      ),
-    },
-  ];
-
-  const data: DataType[] = [];
-  if (isSuccess) {
-    for (let i = 0; i < shops.data?.length; i++) {
-      data.push({
-        key: shops.data[i].id,
-        name: shops.data[i].Shop?.shopName,
-        phone: shops.data[i].Shop?.shopContact,
-        address: shops.data[i]?.Shop?.shopAddress,
-        email: shops.data[i].Shop?.shopEmail,
-        images: shops.data[i]?.image,
-        referalCode: shops.data[i]?.referalCode,
-        blocked: shops.data[i].blocked,
-        adminApproved: shops.data[i].verified,
-        action: shops.data[i],
-      });
-    }
-  }
+  const data: ShopData[] = useMemo(
+    () =>
+      isSuccess
+        ? shops.data?.map((shop: any) => ({
+            key: shop.id,
+            name: shop.Shop?.shopName,
+            phone: shop.Shop?.shopContact,
+            address: shop?.Shop?.shopAddress,
+            email: shop.Shop?.shopEmail,
+            images: shop?.image,
+            referalCode: shop?.referalCode,
+            blocked: shop.blocked,
+            adminApproved: shop.verified,
+            action: shop,
+          })) ?? []
+        : [],
+    [isSuccess, shops.data]
+  );
 
   return (
-    <div className="">
+    <>
       <Table
         className="mt-10"
         title={() => (
           <div className="flex justify-between">
-            <div className="text-3xl font-bold ">Shops</div>
+            <div className="text-3xl font-bold">Shops</div>
             <div className="">
               <Button onClick={() => setOpenCreate(true)}>Create</Button>
             </div>
           </div>
         )}
-        loading={isLoading}
+        loading={isLoading && !isSuccess}
         columns={columns}
         dataSource={data}
         scroll={{ x: 800, y: 500 }}
+        rowKey={(record) => record.key.toString()}
       />
 
       <Drawer
         title="Create Shop"
         placement="right"
         onClose={() => setOpenCreate(false)}
-        open={openCreate}
+        visible={openCreate}
       >
-        <CreateSeller closeDrawer={() => setOpenCreate(!openCreate)} />
+        <CreateSeller closeDrawer={() => setOpenCreate(false)} />
       </Drawer>
       <Drawer
         title="Edit Shop"
         placement="right"
         onClose={() => setOpenEdit(false)}
-        open={openEdit}
+        visible={openEdit}
       >
         <EditSeller
           openEdit={openEdit}
-          closeDrawer={() => setOpenEdit(!openEdit)}
+          closeDrawer={() => setOpenEdit(false)}
         />
       </Drawer>
-    </div>
+    </>
   );
 }
 

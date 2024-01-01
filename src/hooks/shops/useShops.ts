@@ -22,16 +22,39 @@ export const useEditShopStatus = () => {
   return useMutationWithToken(editShop);
 };
 
+// export const useEditShop = () => {
+//   const editShop = async (data: any, headers: any) => {
+//     const { id, ...shop } = data;
+//     console.log({ shop });
+
+//     const formData = new FormData();
+
+//     for (const [key, value] of Object.entries(shop) as [string,any] ) {
+//       if (Array.isArray(value)) {
+//         if (value.length > 0 && value[0]?.originFileObj instanceof Blob) {
+//           formData.append(key, value[0].originFileObj as Blob);
+//         }
+//       } else {
+//         formData.append(key, value);
+//       }
+//     }
+
+//     return await APIClientPrivate.patch(`/shop/update/${id}`, formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+//   };
+
+//   return useMutationWithToken(editShop);
+// };
+
 export const useEditShop = () => {
 	const editShop = async (data: any,headers:any) => {
 		const {id, ...shop} = data
 		console.log({ shop });
 		
-		return await APIClientPrivate.patch(`/shop/update/${id}`, shop, {
-			headers: {
-				"Content-Type":"multipart/formdata"
-			}
-		});
+		return await APIClientPrivate.patch(`/shop/update/${id}`, shop,headers);
 	};
   return useMutationWithToken(editShop);
 };

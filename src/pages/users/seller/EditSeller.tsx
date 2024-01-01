@@ -1,6 +1,9 @@
-import { Button, Form, Input, Switch, message } from "antd";
+import { Button, Form, Input, Switch, Upload, message } from "antd";
 import { useGlobalState } from "../../../context/GlobalStateContext";
 import { useEditShop } from "../../../hooks/shops/useShops";
+import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import { editSeller } from "../../../utils/types";
 // import userRou/ from "react-router-dom"
 
 type EditSellerProps = {
@@ -8,21 +11,26 @@ type EditSellerProps = {
   closeDrawer: () => void;
 };
 
-function EditSeller({ openEdit,closeDrawer }: EditSellerProps) {
+function EditSeller({ openEdit, closeDrawer }: EditSellerProps) {
   const { editData } = useGlobalState();
   const { mutate: editSeller } = useEditShop();
 
   console.log({ editData });
 
   const [form] = Form.useForm();
-  const onFinish = async (values: any) => {
+
+  const onFinish = async (values: editSeller) => {
+    console.log({ values });
+
     const data = {
+      id: editData.key,
       username: values.username,
       shopName: values.shopName,
       email: values.email,
       password: values.password,
       phone: values.contact,
-      verified: values.verifed,
+      verified: values.verified,
+      files: values.files,
     };
 
     await editSeller(data, {
@@ -31,12 +39,10 @@ function EditSeller({ openEdit,closeDrawer }: EditSellerProps) {
       },
       onSuccess(data) {
         console.log({ data });
-          form.resetFields();
+        form.resetFields();
         message.success("Seller updated successfully");
       },
     });
-
-    console.log({ data });
 
     // createData(data, {
     //   onError(error, variables, context) {
@@ -51,7 +57,13 @@ function EditSeller({ openEdit,closeDrawer }: EditSellerProps) {
   };
 
   // if (!openEdit) roou
-
+  const normFile = (e: any) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
   return (
     <div>
       <Form
@@ -117,6 +129,17 @@ function EditSeller({ openEdit,closeDrawer }: EditSellerProps) {
           ]}
         >
           <Input type="tel" maxLength={10} />
+        </Form.Item>
+        <Form.Item
+          name="upload"
+          label="Upload"
+          valuePropName="fileList"
+          getValueFromEvent={normFile}
+          extra="longgggggggggggggggggggggggggggggggggg"
+        >
+          <Upload name="logo" action="/upload.do" listType="picture">
+            <Button icon={<UploadOutlined />}>Click to upload</Button>
+          </Upload>
         </Form.Item>
         <Form.Item label="Verfied" name="verifed" valuePropName="checked">
           <Switch className="bg-slate-300" />

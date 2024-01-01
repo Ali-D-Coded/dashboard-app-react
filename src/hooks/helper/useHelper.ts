@@ -2,10 +2,10 @@ import { message } from "antd";
 import { useMutation, useQuery } from "react-query";
 import jsCookie from 'js-cookie';
 
-//@ts-ignore
-const token : string = jsCookie.get("_auth")
 
-export const createHeaders = (token: string) => ({
+const token : string | undefined = jsCookie.get("_auth")
+
+export const createHeaders = (token: string | undefined) => ({
   headers: {
 		Authorization: `Bearer ${token}`,
 	  "Content-Type": "multipart/form-data",
